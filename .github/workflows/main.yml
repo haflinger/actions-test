@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: "refs/heads/foo"
       - name: Echo Hello World !
         run: echo Hello, world!
       - name: Dump GitHub context
