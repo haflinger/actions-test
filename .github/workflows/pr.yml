@@ -25,3 +25,18 @@ jobs:
         run: |
           echo "$GITHUB_CONTEXT"
           echo ${{ github.event.pull_request.head.sha }}
+          
+      - name: Wait 30 seconds
+        run: |
+          sleep 30
+          
+      - uses: octokit/request-action@v2.x
+        id: fetch
+        with:
+          route: GET ${{ github.event.issue.pull_request.url }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Last commit
+        run: |
+          echo ${{fromJSON(steps.fetch.outputs.data).head.sha}}
