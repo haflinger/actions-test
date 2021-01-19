@@ -4,8 +4,8 @@ name: Deploy PR
 
 # Controls when the action will run. 
 on:
-  pull_request:
-    branches: [ main ]
+  push:
+    branches: [ foobar ]
     
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -21,14 +21,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Dump GitHub context
+      - name: Get commit sha
         id: current
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
-          echo "$GITHUB_CONTEXT"
-          echo ${{ github.event.pull_request.head.sha }}
-          echo "::set-output name=sha::${{ github.event.pull_request.head.sha }}"
+          echo "::set-output name=sha::${{ github.event.push.after }}"
           
       - name: Wait 30 seconds
         run: |
@@ -37,12 +33,12 @@ jobs:
       - uses: octokit/request-action@v2.x
         id: fetch
         with:
-          route: GET ${{ github.event.pull_request.url }}
+          route: GET /repos/haflinger/actions-test/branches/foobar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Last commit
-        if: steps.current.outputs.sha == fromJSON(steps.fetch.outputs.data).head.sha
+        if: steps.current.outputs.sha == fromJSON(steps.fetch.outputs.data).commit.sha
         run: |
           echo ${{fromJSON(steps.fetch.outputs.data).head.sha}}
   work:
