@@ -24,5 +24,4 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
-          echo "$GITHUB_SHA"
-          echo ${{ github.event.pull_request.title }}
+          echo ${{ github.event.pull_request.head.sha }}
