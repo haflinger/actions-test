@@ -33,7 +33,7 @@ jobs:
       - uses: octokit/request-action@v2.x
         id: fetch
         with:
-          route: GET ${{ github.event.issue.pull_request.url }}
+          route: GET ${{ github.event.pull_request.url }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
