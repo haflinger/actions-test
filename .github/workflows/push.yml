@@ -31,7 +31,7 @@ jobs:
       - name: Get commit sha
         id: current
         run: |
-          echo "::set-output name=sha::${{ github.event.push.after }}"
+          echo "::set-output name=sha::${{ github.event.after }}"
           
       - name: Wait 30 seconds
         run: |
