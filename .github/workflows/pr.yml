@@ -24,16 +24,5 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
+          echo "$GITHUB_SHA"
           echo ${{ github.event.pull_request.title }}
-      
-      - uses: octokit/request-action@v2.x
-        id: commits
-        with:
-          route: GET ${{ github.event.pull_request._links.commits.href }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Commits list
-        run: |
-          echo ${{ steps.commits.outputs.data }}
-          
