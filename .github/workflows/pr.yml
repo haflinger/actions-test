@@ -10,7 +10,9 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  check:
+    outputs:
+      status: ${{ steps.*.conclusion }}
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -20,11 +22,13 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Dump GitHub context
+        id: current
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
           echo ${{ github.event.pull_request.head.sha }}
+          echo "::set-output name=sha::${{ github.event.pull_request.head.sha }}"
           
       - name: Wait 30 seconds
         run: |
@@ -38,5 +42,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Last commit
+        if: current.sha == fromJSON(steps.fetch.outputs.data).head.sha
         run: |
           echo ${{fromJSON(steps.fetch.outputs.data).head.sha}}
+  work:
+    runs-on: ubuntu-latest
+    needs: check
+    if: !contains(needs.check.outputs.status, 'failure')
+    steps:
+      - run: |
+          echo "Do it !"
