@@ -1,1 +1,1 @@
-console.log('FOO BAR');
+console.log('FOO BAR DOT');
