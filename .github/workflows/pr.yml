@@ -42,7 +42,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Last commit
-        if: current.sha == fromJSON(steps.fetch.outputs.data).head.sha
+        if: steps.current.outputs.sha == fromJSON(steps.fetch.outputs.data).head.sha
         run: |
           echo ${{fromJSON(steps.fetch.outputs.data).head.sha}}
   work:
