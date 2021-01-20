@@ -7,7 +7,7 @@ on:
 jobs:
   check:
     outputs:
-      last: github.event.after == steps.last_commit.outputs.sha
+      last: ${{ github.event.after == steps.last_commit.outputs.sha }}
     runs-on: ubuntu-latest
 
     steps:
