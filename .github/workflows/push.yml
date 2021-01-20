@@ -36,4 +36,5 @@ jobs:
     if: needs.check.outputs.last == 'true'
     steps:
       - run: |
+          echo ${{ needs.check.outputs.last }}
           echo "Do it !"
