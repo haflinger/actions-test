@@ -40,7 +40,7 @@ jobs:
       - uses: octokit/request-action@v2.x
         id: fetch
         with:
-          route: GET /repos/haflinger/actions-test/branches/foobar
+          route: GET /repos/${{ github.repository }}/branches/${{ github.event.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
